@@ -63,5 +63,5 @@ figures
 *.drawio.bkp
 *.html
 *.slurm
-*.pdf
+#*.pdf
 *.ipynb
