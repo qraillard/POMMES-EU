@@ -65,3 +65,7 @@ figures
 *.slurm
 *.pdf
 *.ipynb
+
+# Input data (downloaded from Zenodo by fetch_data.py)
+data/*.csv
+data/*.part

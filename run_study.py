@@ -22,17 +22,15 @@ solver = "gurobi"  # gurobi, cplex, mosek, highs
 threads = 4
 h2_mr=False
 daily_h2_demand=False
-industry_hubs=False
 methane_based_h2_ramping=True
-belgian_backbone_setting=0
 config_file="config.yaml"
 areas=["BE","NL","FR","DE","UK","LU","ES","PT","IT","CH","IE","DK","NO","SE","SI","PL",
         "CZ","AT","EE","LV","LT","FI","HU","RO","SK","BG","GR"]
 ##########################
 args = sys.argv[1:]
 # print(args)
-options = "s:c:t:n:mdhb:r:"
-long_options = ["solver", "config_file", "threads","nodes","must_run_h2","daily_h2_demand","hubs_industry","belgian_backbone_setting","methane_based_h2_ramping"]
+options = "s:c:t:n:mdr:"
+long_options = ["solver", "config_file", "threads","nodes","must_run_h2","daily_h2_demand","methane_based_h2_ramping"]
 go=True
 try:
     arguments, values = getopt.getopt(args, options, long_options)
@@ -65,25 +63,7 @@ try:
             else:
                 print("Wrong ramping option")
                 go=False
-
-        elif currentArg in ("-h", "--hubs_industry"):
-            industry_hubs=True
-            areas+=["Liege","AlbertCanal","Charleroi","Antwerp","Ghent","Tournai_Mons"]
-            if config_file!="config.yaml":
-                areas+=["Zeebrugge"]
-            print("Industry hubs set")
-        elif currentArg in ("-b", "--belgian_backbone_setting"):
-            if not industry_hubs:
-                print("Belgian Backbone requires industry hubs to be set")
-                go = False
-            elif int(currentVal) not in [0,1,2]:
-                print("Invalid Belgian Backbone configuration set - needs to be in [0,1,2]")
-                go = False
-            else:
-                belgian_backbone_setting=int(currentVal)
-                if int(currentVal)==2:
-                    areas+=["BE_cavern"]
-    if industry_hubs+daily_h2_demand+h2_mr>1:
+    if daily_h2_demand+h2_mr>1:
         go=False
         print("Invalid scenario set")
 except getopt.error as err:
@@ -124,8 +104,6 @@ if __name__ == "__main__" and go:
             suffix+='-daily_h2_demand'
         if not methane_based_h2_ramping:
             suffix+='-no_smr_ramping'
-        if industry_hubs:
-            suffix+=f"-bhb_{belgian_backbone_setting}"
 
         print(suffix)
         print(year_op,areas)
@@ -142,10 +120,7 @@ if __name__ == "__main__" and go:
         ####Link adjustment
         if config["add_modules"]["transport"] :
             areas=config["coords"]["area"]["values"]
-            if not industry_hubs:
-                all_links=pd.read_csv(config["input"]["path"]+"/transport_link.csv",sep=";").link.unique()
-            else:
-                all_links = pd.read_csv(config["input"]["path"] + "/transport_link_indhub.csv", sep=";").link.unique()
+            all_links=pd.read_csv(config["input"]["path"]+"/transport_link.csv",sep=";").link.unique()
             links = []
 
             for link in all_links:
@@ -176,48 +151,6 @@ if __name__ == "__main__" and go:
             config["input"]["parameters"]["flexdem_demand"]["file"] = "flexdem_demand_dh2d.csv"
             for param in ["flexdem_conservation_hrs","flexdem_ramp_up","flexdem_ramp_down","flexdem_maxload_ratio","flexdem_minload_ratio"]:
                 config["input"]["parameters"][param]["file"]="flexdem_op_dh2d.csv"
-
-        #####Industry hubs setting
-        if industry_hubs:
-            #conversion_op2 update
-            for param in ["conversion_max_yearly_production","conversion_max_daily_production",
-                          "conversion_power_capacity_max","conversion_power_capacity_min",
-                          "conversion_fixed_cost","conversion_variable_cost","conversion_must_run"]:
-                config["input"]["parameters"][param]["file"]=config["input"]["parameters"][param]["file"][:-4] + "_indhub" + config["input"]["parameters"][param]["file"][-4:]
-
-            #demand update
-            config["input"]["parameters"]["demand"]["file"]="demand_indhub.csv"
-
-            #transport_tech list update
-            transport_tech_list = ["hvac", "hvdc", "local_tso", "local_biogas"]
-            if belgian_backbone_setting > 0:  # if setting 0 then no BHB
-                transport_tech_list += ["h2_pipeline"]
-            config["coords"]["transport_tech"]["values"] = transport_tech_list
-
-            #transport and storage_in2 files update
-            transport_suffix = "_indhub"
-            transport_op2_suffix = transport_suffix
-            storage_suffix="_indhub"
-            if config_file=="config.yaml":
-                transport_op2_suffix+="_isolated"
-                storage_suffix += "_isolated"
-                if belgian_backbone_setting>0:
-                    storage_tech_list=["battery", "PHS","h2_tank","salt_cavern","hydro_reservoir_volume","hydro_pondage_volume"]
-                    config["coords"]["storage_tech"]["values"]=storage_tech_list
-
-            for param in ["storage_energy_capacity_investment_max","storage_energy_capacity_investment_min","storage_power_capacity_investment_max","storage_power_capacity_investment_min"]:
-                config["input"]["parameters"][param]["file"] = f"storage_inv2{storage_suffix}.csv"
-
-            for param in ["transport_annuity_perfect_foresight","transport_early_decommissioning",
-                          "transport_invest_cost","transport_life_span","transport_finance_rate"]:
-                config["input"]["parameters"][param]["file"] = f"transport_inv{transport_suffix}.csv"
-
-            for param in ["transport_area_from","transport_area_to","transport_resource"]:
-                config["input"]["parameters"][param]["file"] = f"transport_link{transport_suffix}.csv"
-
-            for param in ["transport_power_capacity_max","transport_power_capacity_min"]:
-                config["input"]["parameters"][param]["file"] = f"transport_op2{transport_op2_suffix}.csv"
-
 
         model_parameters = build_input_parameters(config)
 
