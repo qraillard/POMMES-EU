@@ -64,5 +64,4 @@ figures
 *.html
 *.slurm
 *.pdf
-!doc/data_description.pdf
 *.ipynb
