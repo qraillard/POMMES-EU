@@ -19,8 +19,6 @@ The repository was developed to study electricity and hydrogen capacity expansio
 | EHB - European Hydrogen Backbone | `config_ehb.yaml` |
 | EHB+I - European Hydrogen Backbone allowing for extra-european imports | `config_ehb+i.yaml` |
 
-With a focus on Belgium, the dataset provides as well another case redispatching hydrogen demand in Belgium among different hydrogen consuming industry clusters to assess the impact of an increase in spatial granularity.
-
 ![image](readme_images/merged_maps.png)
 
 ## Running a study
@@ -38,15 +36,14 @@ python run_study.py -c config_ehb.yaml -t 4
 | `-n <n>` | Keep only the first `n` countries of the default list of 27 |
 | `-m` | Hydrogen must-run setting |
 | `-d` | Daily hydrogen demand |
-| `-h` | Add the Belgian industry hubs |
 | `-r <0\|1>` | Methane-based hydrogen ramping off/on (default `1`) |
 
-At most one of `-m`, `-d` and `-h` can be used in a single run.
+`-m` and `-d` cannot be combined in a single run.
 
 The default solver, Gurobi, is commercial (free academic licences are available). HiGHS is open source, but according to the authors it cannot solve this type of problem in a reasonable time.
 
 ## Input data
-The inputs are 43 semicolon-separated CSV files (about 3.8 GB in total, `availability.csv` alone is 2 GB), archived on Zenodo: [10.5281/zenodo.23662766](https://doi.org/10.5281/zenodo.23662766). They are listed in the configuration files and expected in `data/`. Download them with:
+The inputs are semicolon-separated CSV files (about 3.5 GB in total, `availability.csv` alone is 2 GB), archived on Zenodo: [10.5281/zenodo.23662766](https://doi.org/10.5281/zenodo.23662766). They are listed in the configuration files and expected in `data/`. Download them with:
 
 ```bash
 python fetch_data.py
