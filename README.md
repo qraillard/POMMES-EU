@@ -24,7 +24,7 @@ With a focus on Belgium, the dataset provides as well another case redispatching
 ![image](readme_images/merged_maps.png)
 
 ## Running a study
-Install POMMES-KUL following [its instructions](https://github.com/qraillard/pommes-kuleuven#installation), then run from the root of this repository:
+Install POMMES-KUL following [its instructions](https://github.com/qraillard/pommes-kuleuven#installation) and download the [input data](#input-data), then run from the root of this repository:
 
 ```bash
 python run_study.py -c config_ehb.yaml -t 4
@@ -46,7 +46,13 @@ At most one of `-m`, `-d` and `-h` can be used in a single run.
 The default solver, Gurobi, is commercial (free academic licences are available). HiGHS is open source, but according to the authors it cannot solve this type of problem in a reasonable time.
 
 ## Input data
-The inputs are semicolon-separated CSV files in `data/`, listed in the configuration files. They are stored with [Git LFS](https://git-lfs.com) and weigh about 3.8 GB in total (`availability.csv` alone is 2 GB). Install `git-lfs` before cloning. GitHub's "Download ZIP" button does not include them: it only provides small pointer files.
+The inputs are 43 semicolon-separated CSV files (about 3.8 GB in total, `availability.csv` alone is 2 GB), archived on Zenodo: [10.5281/zenodo.23662766](https://doi.org/10.5281/zenodo.23662766). They are listed in the configuration files and expected in `data/`. Download them with:
+
+```bash
+python fetch_data.py
+```
+
+The script only needs Python 3. It checks the MD5 checksum of every file, skips the files that are already present and resumes interrupted downloads. Use `--list` to list the files of the record and `--only <file> ...` to download only some of them.
 
 ## License
 MIT, see [`LICENSE.txt`](LICENSE.txt). Contributors are listed in [`AUTHORS`](AUTHORS).
