@@ -51,5 +51,12 @@ python fetch_data.py
 
 The script only needs Python 3. It checks the MD5 checksum of every file, skips the files that are already present and resumes interrupted downloads. Use `--list` to list the files of the record and `--only <file> ...` to download only some of them.
 
+## Citation
+If you use this repository or its input data, please cite:
+
+Hoogsteyn, A., Raillard-Cazanove, Q., Bruninx, K., & Delarue, E. (2026). [When hydrogen is not fully flexible: Implications for sector-coupled energy models](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7177068). Preprint.
+
+The input data have their own DOI, see [Input data](#input-data). A [`CITATION.cff`](CITATION.cff) file is provided for GitHub's "Cite this repository" button.
+
 ## License
 MIT, see [`LICENSE.txt`](LICENSE.txt). Contributors are listed in [`AUTHORS`](AUTHORS).

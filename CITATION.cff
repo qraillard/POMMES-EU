@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this repository or its input data, please cite the preprint below and the dataset."
+title: "POMMES-EU"
+type: software
+license: MIT
+repository-code: "https://github.com/qraillard/POMMES-EU"
+authors:
+  - family-names: "Raillard-Cazanove"
+    given-names: "Quentin"
+  - family-names: "Hoogsteyn"
+    given-names: "Alexander"
+preferred-citation:
+  type: article
+  status: preprint
+  title: "When hydrogen is not fully flexible: Implications for sector-coupled energy models"
+  authors:
+    - family-names: "Hoogsteyn"
+      given-names: "A."
+    - family-names: "Raillard-Cazanove"
+      given-names: "Q."
+    - family-names: "Bruninx"
+      given-names: "K."
+    - family-names: "Delarue"
+      given-names: "E."
+  year: 2026
+  url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7177068"
+references:
+  - type: data
+    title: "POMMES-EU: input data for a European electricity and hydrogen capacity-expansion model"
+    authors:
+      - family-names: "Raillard-Cazanove"
+        given-names: "Quentin"
+      - family-names: "Hoogsteyn"
+        given-names: "Alexander"
+    year: 2026
+    doi: "10.5281/zenodo.23662766"
+    repository: "https://zenodo.org/records/23662766"
