@@ -4,8 +4,6 @@ This repository presents running code and input data for a European electricity 
 The framework enables to minimise the system costs to meet the energy services demand by modelling the investment
 and operating costs of energy conversion, storage and transport technologies.
 
-> **Note on the repository name.** This repository was formerly named *POMMES-BEH2I* (the old URL redirects here). It also replaces the former *POMMES-EU* repository: four of its input files differed from the ones in this repository (`carbon.csv`, `import_hourly.csv`, `conversion_op2.csv`, `transport_op2.csv`) and are not carried over.
-
 ## Model and data
 POMMES-EU is based on data from [ERAA2024](https://www.entsoe.eu/eraa/2024/) and [TYNDP2024](https://www.entsoe.eu/outlooks/tyndp/2024/), integrating 35 countries (each represented by a single modeling node), four investment horizons, and three operational years—each corresponding to a distinct weather scenario—between each investment phase. A description of the input data is available in [`doc/data_description.pdf`](doc/data_description.pdf).
 
