@@ -39,7 +39,6 @@ python run_study.py -c config_ehb.yaml -t 4
 | `-m` | Hydrogen must-run setting |
 | `-d` | Daily hydrogen demand |
 | `-h` | Add the Belgian industry hubs |
-| `-b <0\|1\|2>` | Belgian hydrogen backbone setting (requires `-h`) |
 | `-r <0\|1>` | Methane-based hydrogen ramping off/on (default `1`) |
 
 At most one of `-m`, `-d` and `-h` can be used in a single run.
